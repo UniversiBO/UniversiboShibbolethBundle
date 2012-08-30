@@ -10,4 +10,3 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 class UniversiboShibbolethBundle extends Bundle
 {
 }
-
