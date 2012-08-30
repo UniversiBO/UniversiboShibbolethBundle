@@ -1,0 +1,24 @@
+{
+    "name": "universibo/shibboleth-bundle",
+    "type": "symfony-bundle",
+    "description": "UniversiBO ShibbolethBundle",
+    "keywords": ["shibboleth"],
+    "homepage": "http://github.com/UniversiBO",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Davide Bellettini",
+            "email": "davide.bellettini@studio.unibo.it"
+        },
+        {
+            "name": "Associazione UniversiBO",
+            "homepage": "https://www.universibo.unibo.it/"
+        }
+    ],
+    "autoload": {
+        "psr-0": { "Universibo\\Bundle\\ShibbolethBundle": "" }
+    },
+    "target-dir": "Universibo/Bundle/ShibbolethBundle",
+    "minimum-stability": "dev"
+}
+
