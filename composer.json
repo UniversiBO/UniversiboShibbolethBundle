@@ -15,6 +15,9 @@
             "homepage": "https://www.universibo.unibo.it/"
         }
     ],
+    "require": {
+        "zendframework/zend-uri": "2.0.x-dev"
+    },
     "autoload": {
         "psr-0": { "Universibo\\Bundle\\ShibbolethBundle": "" }
     },
