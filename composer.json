@@ -11,8 +11,8 @@
             "email": "davide.bellettini@gmail.com"
         },
         {
-            "name": "Associazione UniversiBO",
-            "homepage": "https://www.universibo.unibo.it/"
+            "name": "UniversiboShibbolethBundle Contributors",
+            "homepage": "https://github.com/UniversiBO/UniversiboShibbolethBundle/graphs/contributors"
         }
     ],
     "require": {
@@ -23,7 +23,6 @@
     "autoload": {
         "psr-0": { "Universibo\\Bundle\\ShibbolethBundle": "" }
     },
-    "target-dir": "Universibo/Bundle/ShibbolethBundle",
-    "minimum-stability": "dev"
+    "target-dir": "Universibo/Bundle/ShibbolethBundle"
 }
 
