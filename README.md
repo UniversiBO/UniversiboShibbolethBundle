@@ -2,7 +2,10 @@ UniversiboShibbolethBundle
 ==========================
 
 Symfony 2 Shibboleth integration
-Warning: Early development stage, not ready for use
+
+Warning
+-------
+This bundle is in early development stage, and it's not ready for use
 
 License
 -------
