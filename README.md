@@ -2,6 +2,7 @@ UniversiboShibbolethBundle
 ==========================
 
 Symfony 2 Shibboleth integration
+Warning: Early development stage, not ready for use
 
 License
 -------
