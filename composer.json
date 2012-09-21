@@ -16,8 +16,8 @@
         }
     ],
     "require": {
-        "symfony/framework-bundle": "2.0.*",
-        "symfony/security-bundle": "2.0.*",
+        "symfony/framework-bundle": "2.1.*",
+        "symfony/security-bundle": "2.1.*",
         "zendframework/zend-uri": "2.0.*"
     },
     "autoload": {
