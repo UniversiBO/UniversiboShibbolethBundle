@@ -9,6 +9,10 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
  */
 class ShibbolethToken extends AbstractToken
 {
+    /**
+     * (non-PHPdoc)
+     * @see Symfony\Component\Security\Core\Authentication\Token.TokenInterface::getCredentials()
+     */
     public function getCredentials()
     {
         return '';
