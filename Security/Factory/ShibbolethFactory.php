@@ -20,7 +20,7 @@ class ShibbolethFactory implements SecurityFactoryInterface
         // TODO: Auto-generated method stub
 
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory.SecurityFactoryInterface::getPosition()
@@ -29,7 +29,7 @@ class ShibbolethFactory implements SecurityFactoryInterface
     {
         return 'pre_auth';
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory.SecurityFactoryInterface::getKey()
@@ -38,7 +38,7 @@ class ShibbolethFactory implements SecurityFactoryInterface
     {
         return 'shibboleth';
     }
-    
+
     public function addConfiguration(NodeDefinition $builder)
     {
         // TODO: Auto-generated method stub

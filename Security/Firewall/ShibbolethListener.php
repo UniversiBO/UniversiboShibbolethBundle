@@ -23,24 +23,24 @@ class ShibbolethListener implements ListenerInterface
      * @var SecurityContextInterface
      */
     private $securityContext;
-    
+
     /**
      * @var AuthenticationManagerInterface
      */
     private $authenticationManager;
-    
+
     /**
-     * @param SecurityContextInterface $securityContext
+     * @param SecurityContextInterface       $securityContext
      * @param AuthenticationManagerInterface $authenticationManager
-     * @param array $claims
+     * @param array                          $claims
      */
     public function __construct(SecurityContextInterface $securityContext,
             AuthenticationManagerInterface $authenticationManager)
     {
-    	$this->securityContext = $securityContext;
-    	$this->authenticationManager = $authenticationManager;
+        $this->securityContext = $securityContext;
+        $this->authenticationManager = $authenticationManager;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Http\Firewall.ListenerInterface::handle()
