@@ -2,8 +2,6 @@
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Factory;
 
-use Symfony\Component\DependencyInjection\Reference;
-
 use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,10 +24,10 @@ class ShibbolethFactory implements SecurityFactoryInterface
         $container
         ->setDefinition($providerId, new DefinitionDecorator('universibo_shibboleth.security.authentication.provider'))
         ;
-        
+
         $listenerId = 'security.authentication.listener.shibboleth.'.$id;
         $listener = $container->setDefinition($listenerId, new DefinitionDecorator('universibo_shibboleth.security.authentication.listener'));
-        
+
         return array($providerId, $listenerId, $defaultEntryPoint);
     }
 
