@@ -2,7 +2,7 @@
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\User;
 
-class ShibbolethUserProviderInterface
+interface ShibbolethUserProviderInterface
 {
     /**
      * @param array $claims

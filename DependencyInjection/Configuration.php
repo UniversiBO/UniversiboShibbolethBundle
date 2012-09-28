@@ -50,6 +50,10 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->prototype('scalar')->end()
                 ->end()
+                ->scalarNode('user_provider')
+                    ->isRequired()
+                    ->cannotBeEmpty()
+                ->end()
             ->end();
 
         return $treeBuilder;

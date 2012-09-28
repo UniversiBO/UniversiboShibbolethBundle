@@ -1,7 +1,9 @@
 services:
   universibo_shibboleth.security.authentication.provider:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider\ShibbolethProvider'
-    arguments: ['']
+    factory_class: 'Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider\ShibbolethProviderFactory'
+    factory_method: get
+    arguments: ['@service_container', '%universibo_shibboleth.user_provider%']
   universibo_shibboleth.security.authentication.listener:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Firewall\ShibbolethListener'
     arguments: ['@security.context','@security.authentication.manager','%universibo_shibboleth.claims%']
