@@ -40,9 +40,9 @@ class UniversiboShibbolethExtension extends Extension
     }
 
     /**
-     * @param array $config
-     * @param string $name
-     * @param string $base
+     * @param  array                     $config
+     * @param  string                    $name
+     * @param  string                    $base
      * @throws \InvalidArgumentException
      * @return string
      */
