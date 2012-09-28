@@ -1,6 +1,10 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Factory;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
+
 use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\SecurityFactoryInterface;
 
 /**
@@ -16,16 +20,25 @@ class ShibbolethFactory implements SecurityFactoryInterface
         // TODO: Auto-generated method stub
 
     }
+    
+    /**
+     * (non-PHPdoc)
+     * @see Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory.SecurityFactoryInterface::getPosition()
+     */
     public function getPosition()
     {
-        // TODO: Auto-generated method stub
-
+        return 'pre_auth';
     }
+    
+    /**
+     * (non-PHPdoc)
+     * @see Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory.SecurityFactoryInterface::getKey()
+     */
     public function getKey()
     {
-        // TODO: Auto-generated method stub
-
+        return 'shibboleth';
     }
+    
     public function addConfiguration(NodeDefinition $builder)
     {
         // TODO: Auto-generated method stub
