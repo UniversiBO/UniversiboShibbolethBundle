@@ -47,6 +47,7 @@ class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('claims')
+                    ->isRequired()
                     ->prototype('scalar')->end()
                 ->end()
             ->end();

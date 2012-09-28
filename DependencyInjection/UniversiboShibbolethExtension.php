@@ -37,6 +37,7 @@ class UniversiboShibbolethExtension extends Extension
         }
 
         $container->setParameter('universibo_shibboleth.route.after_logout', $config['route']['after_logout']);
+        $container->setParameter('universibo_shibboleth.claims', $config['claims']);
     }
 
     /**

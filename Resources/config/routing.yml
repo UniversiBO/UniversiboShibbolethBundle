@@ -1,3 +1,0 @@
-universibo_shibboleth_sso:
-    pattern: /Shibboleth.sso
-    defaults: { _controller: 'UniversiboShibbolethBundle:SSO:index' }

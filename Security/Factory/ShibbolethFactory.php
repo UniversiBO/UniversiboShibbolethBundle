@@ -1,6 +1,10 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Factory;
+use Symfony\Component\DependencyInjection\Reference;
+
+use Symfony\Component\DependencyInjection\DefinitionDecorator;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
@@ -17,8 +21,16 @@ class ShibbolethFactory implements SecurityFactoryInterface
     public function create(ContainerBuilder $container, $id, $config,
             $userProvider, $defaultEntryPoint)
     {
-        // TODO: Auto-generated method stub
+        $providerId = 'security.authentication.provider.shibboleth.'.$id;
+        $container
+        ->setDefinition($providerId, new DefinitionDecorator('universibo_shibboleth.security.authentication.provider'))
+        ->replaceArgument(0, new Reference($userProvider))
+        ;
 
+        $listenerId = 'security.authentication.listener.shibboleth.'.$id;
+        $listener = $container->setDefinition($listenerId, new DefinitionDecorator('universibo_shibboleth.security.authentication.listener'));
+
+        return array($providerId, $listenerId, $defaultEntryPoint);
     }
 
     /**
@@ -41,8 +53,5 @@ class ShibbolethFactory implements SecurityFactoryInterface
 
     public function addConfiguration(NodeDefinition $builder)
     {
-        // TODO: Auto-generated method stub
-
     }
-
 }

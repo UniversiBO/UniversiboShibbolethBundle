@@ -1,6 +1,8 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+
 use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethToken;
 
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
@@ -18,4 +20,15 @@ class ShibbolethProvider implements AuthenticationProviderInterface
     {
         return $token instanceof ShibbolethToken;
     }
+
+    /**
+     * (non-PHPdoc)
+     * @see Symfony\Component\Security\Core\Authentication.AuthenticationManagerInterface::authenticate()
+     */
+    public function authenticate(TokenInterface $token)
+    {
+        // TODO: Auto-generated method stub
+
+    }
+
 }
