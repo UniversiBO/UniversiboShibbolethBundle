@@ -1,11 +1,14 @@
 UniversiboShibbolethBundle
 ==========================
-
-Symfony 2 Shibboleth integration
+This bundle's aim is to provide Shibboleth integration for your Symfony 2.1 project.
 
 Warning
 -------
 This bundle is in early development stage, and it's not ready for use
+
+Documentation
+-------------
+[Read the Documentation for master](https://github.com/UniversiBO/UniversiboShibbolethBundle/blob/master/Resources/doc/index.md)
 
 License
 -------
