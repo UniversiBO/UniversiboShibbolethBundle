@@ -61,7 +61,7 @@ class ShibbolethListener implements ListenerInterface
         $request = $event->getRequest();
 
         // checking if this page is secured by Shibboleth
-        if (is_null($sessionId = $request->server->get('Shib-Session-ID', 
+        if (is_null($sessionId = $request->server->get('Shib-Session-ID',
                 $request->server->get('REDIRECT_Shib-Session-ID')))) {
             return;
         }
