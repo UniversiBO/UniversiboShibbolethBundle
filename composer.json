@@ -20,6 +20,9 @@
         "symfony/security-bundle": "2.1.*",
         "zendframework/zend-uri": ">=2.0.0,<2.1.0"
     },
+    "require-dev": {
+        "symfony/yaml": "2.1.*"
+    },
     "autoload": {
         "psr-0": { "Universibo\\Bundle\\ShibbolethBundle": "" }
     },

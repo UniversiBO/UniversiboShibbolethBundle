@@ -6,6 +6,8 @@ namespace Universibo\Bundle\ShibbolethBundle\Tests\DependencyInjection;
  * Some methods are from FOSUserBundle (Copyright (c) 2010-2011 FriendsOfSymfony)
  * @author Davide Bellettini <davide.bellettini>
  */
+use Symfony\Component\Yaml\Parser;
+
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Universibo\Bundle\ShibbolethBundle\DependencyInjection\UniversiboShibbolethExtension;
@@ -20,6 +22,28 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     	$loader = new UniversiboShibbolethExtension();
     	$config = $this->getConfig();
     	unset($config['idp_url']['base']);
+    	$loader->load(array($config), new ContainerBuilder());
+    }
+    
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testMissingInfoUrlThrowsException()
+    {
+    	$loader = new UniversiboShibbolethExtension();
+    	$config = $this->getConfig();
+    	unset($config['idp_url']['base']);
+    	$loader->load(array($config), new ContainerBuilder());
+    }
+    
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testMissingLogoutUrlThrowsException()
+    {
+    	$loader = new UniversiboShibbolethExtension();
+    	$config = $this->getConfig();
+    	unset($config['idp_url']['logout']);
     	$loader->load(array($config), new ContainerBuilder());
     }
 
@@ -39,6 +63,9 @@ claims:
   - sn
 user_provider: universibo_website.user.provider
 EOF;
+        $parser = new Parser();
+        
+        return $parser->parse($yaml);
     }
     
     private function assertParameter($value, $key)
