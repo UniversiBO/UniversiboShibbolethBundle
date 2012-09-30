@@ -19,72 +19,72 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testMissingBaseUrlThrowsException()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	unset($config['idp_url']['base']);
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['idp_url']['base']);
+        $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingInfoUrlThrowsException()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	unset($config['idp_url']['base']);
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['idp_url']['base']);
+        $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingLogoutUrlThrowsException()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	unset($config['idp_url']['logout']);
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['idp_url']['logout']);
+        $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingClaimsThrowsException()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	unset($config['claims']);
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['claims']);
+        $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingAfterLogoutRouteThrowsException()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	unset($config['route']['after_logout']);
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['route']['after_logout']);
+        $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     /**
      * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingUserProviderThrowsException()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	unset($config['user_provider']);
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['user_provider']);
+        $loader->load(array($config), new ContainerBuilder());
     }
-    
+
     public function testCorrectConfig()
     {
-    	$loader = new UniversiboShibbolethExtension();
-    	$config = $this->getConfig();
-    	$loader->load(array($config), new ContainerBuilder());
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        $loader->load(array($config), new ContainerBuilder());
     }
 
     private function getConfig()
@@ -104,7 +104,7 @@ claims:
 user_provider: universibo_website.user.provider
 EOF;
         $parser = new Parser();
-        
+
         return $parser->parse($yaml);
     }
 }
