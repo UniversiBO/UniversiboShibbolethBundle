@@ -46,6 +46,46 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     	unset($config['idp_url']['logout']);
     	$loader->load(array($config), new ContainerBuilder());
     }
+    
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testMissingClaimsThrowsException()
+    {
+    	$loader = new UniversiboShibbolethExtension();
+    	$config = $this->getConfig();
+    	unset($config['claims']);
+    	$loader->load(array($config), new ContainerBuilder());
+    }
+    
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testMissingAfterLogoutRouteThrowsException()
+    {
+    	$loader = new UniversiboShibbolethExtension();
+    	$config = $this->getConfig();
+    	unset($config['route']['after_logout']);
+    	$loader->load(array($config), new ContainerBuilder());
+    }
+    
+    /**
+     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testMissingUserProviderThrowsException()
+    {
+    	$loader = new UniversiboShibbolethExtension();
+    	$config = $this->getConfig();
+    	unset($config['user_provider']);
+    	$loader->load(array($config), new ContainerBuilder());
+    }
+    
+    public function testCorrectConfig()
+    {
+    	$loader = new UniversiboShibbolethExtension();
+    	$config = $this->getConfig();
+    	$loader->load(array($config), new ContainerBuilder());
+    }
 
     private function getConfig()
     {
@@ -66,10 +106,5 @@ EOF;
         $parser = new Parser();
         
         return $parser->parse($yaml);
-    }
-    
-    private function assertParameter($value, $key)
-    {
-    	$this->assertEquals($value, $this->configuration->getParameter($key), sprintf('%s parameter is correct', $key));
     }
 }
