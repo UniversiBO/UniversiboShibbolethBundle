@@ -1,6 +1,8 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Http\Logout;
+use Symfony\Component\HttpFoundation\Cookie;
+
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +24,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
             TokenInterface $token)
     {
         foreach ($request->cookies->keys() as $key) {
-            if (preg_match('/^shib/', $key)) {
+            if (preg_match('/shibsession/', $key)) {
                 $response->headers->setCookie(new Cookie($key));
             }
         }
