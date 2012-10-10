@@ -9,4 +9,4 @@ services:
     arguments: ['@security.context','@security.authentication.manager','%universibo_shibboleth.claims%']
   universibo_shibboleth.logout_handler:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler'
-    arguments: ['%universibo_shibboleth.idp_url.base%%universibo_shibboleth.idp_url.logout%']
+    arguments: ['%universibo_shibboleth.idp_url.logout%']
