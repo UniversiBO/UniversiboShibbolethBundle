@@ -10,11 +10,7 @@ class SecurityController extends Controller
 {
     public function loginAction()
     {
-        $request = $this->getRequest();
-
-        $url = $request->headers->get('Referer');
-
-        return $this->redirect($url);
+        return $this->redirect('/');
 
         // TODO method stub
     }
