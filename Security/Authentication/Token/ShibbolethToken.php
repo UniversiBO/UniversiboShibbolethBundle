@@ -11,18 +11,13 @@ use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
 class ShibbolethToken extends AbstractToken
 {
     /**
-     * @var array
-     */
-    private $claims;
-
-    /**
      * @param  array                                                                             $claims
      * @return \Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethToken
      */
     public function setClaims(array $claims)
     {
-        $this->claims = $claims;
-
+        $this->setAttribute('claims', $claims);
+        
         return $this;
     }
 
@@ -31,7 +26,7 @@ class ShibbolethToken extends AbstractToken
      */
     public function getClaims()
     {
-        return $this->claims;
+        return $this->getAttribute('claims');
     }
 
     /**
