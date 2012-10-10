@@ -20,7 +20,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
      * @var string
      */
     private $logoutUri;
-    
+
     /**
      * @param string $logoutUri
      */
@@ -28,7 +28,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
     {
         $this->logoutUri = $logoutUri;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Http\Logout.LogoutHandlerInterface::logout()
@@ -36,22 +36,25 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
     public function logout(Request $request, Response $response,
             TokenInterface $token)
     {
-        if ($request->query->get('shibboleth')) {
+        $invalidate = $request->query->get('shibboleth') !== null;
+        if ($invalidate) {
             foreach ($request->cookies->keys() as $key) {
-            	if (preg_match('/shibsession/', $key)) {
-            		$response->headers->setCookie(new Cookie($key));
-            	}
+                if (preg_match('/shibsession/', $key)) {
+                    $response->headers->setCookie(new Cookie($key));
+                }
             }
-            
-            $request->getSession()->invalidate();
-            
+
             $greenCheck = '/bundles/universiboshibboleth/images/greencheck.gif';
             $location = $request->getUriForPath($greenCheck);
         } else {
             $location = $this->logoutUri;
         }
-        
+
         $response->headers->set('Location', $location);
         $response->setStatusCode(302);
+        
+        if ($invalidate) {
+        	$request->getSession()->invalidate();
+        }
     }
 }
