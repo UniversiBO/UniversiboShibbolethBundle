@@ -22,7 +22,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
         }
 
         $request->getSession()->invalidate();
-        
+
         // TODO redirect to greencheck.gif?
     }
 }
