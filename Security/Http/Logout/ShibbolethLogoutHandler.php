@@ -31,9 +31,9 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
 
         $request->getSession()->invalidate();
 
-        if($request->query->get('shibboleth')) {
+        if ($request->query->get('shibboleth')) {
             $greenCheck = '/bundles/universiboshibboleth/images/greencheck.gif';
-            $response->headers->set('Location', $request->getBasePath().'$greenCheck);
+            $response->headers->set('Location', $request->getBasePath().$greenCheck);
             $response->setStatusCode(302);
         }
     }
