@@ -52,9 +52,9 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
 
         $response->headers->set('Location', $location);
         $response->setStatusCode(302);
-        
+
         if ($invalidate) {
-        	$request->getSession()->invalidate();
+            $request->getSession()->invalidate();
         }
     }
 }
