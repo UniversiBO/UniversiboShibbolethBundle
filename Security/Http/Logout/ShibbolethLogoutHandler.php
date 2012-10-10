@@ -36,15 +36,15 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
     public function logout(Request $request, Response $response,
             TokenInterface $token)
     {
-        foreach ($request->cookies->keys() as $key) {
-            if (preg_match('/shibsession/', $key)) {
-                $response->headers->setCookie(new Cookie($key));
-            }
-        }
-
-        $request->getSession()->invalidate();
-
         if ($request->query->get('shibboleth')) {
+            foreach ($request->cookies->keys() as $key) {
+            	if (preg_match('/shibsession/', $key)) {
+            		$response->headers->setCookie(new Cookie($key));
+            	}
+            }
+            
+            $request->getSession()->invalidate();
+            
             $greenCheck = '/bundles/universiboshibboleth/images/greencheck.gif';
             $location = $request->getBasePath().$greenCheck;
         } else {
