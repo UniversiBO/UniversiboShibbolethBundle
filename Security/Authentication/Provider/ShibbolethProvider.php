@@ -51,6 +51,7 @@ class ShibbolethProvider implements AuthenticationProviderInterface
         }
         
         $authenticatedToken = new ShibbolethToken($user->getRoles());
+        $authenticatedToken->setClaims($token->getClaims());
         $authenticatedToken->setUser($user);
         
         return $authenticatedToken;
