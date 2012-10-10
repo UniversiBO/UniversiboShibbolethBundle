@@ -17,7 +17,7 @@ class ShibbolethToken extends AbstractToken
     public function setClaims(array $claims)
     {
         $this->setAttribute('claims', $claims);
-        
+
         return $this;
     }
 

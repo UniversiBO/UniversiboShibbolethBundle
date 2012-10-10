@@ -11,7 +11,6 @@ use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethT
 use Universibo\Bundle\ShibbolethBundle\Security\User\ShibbolethUserProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 
-
 /**
  * @author Davide Bellettini <davide.bellettini@gmail.com>
  */
@@ -21,13 +20,12 @@ class ShibbolethProvider implements AuthenticationProviderInterface
      * @var ShibbolethUserProviderInterface
      */
     private $userProvider;
-    
+
     public function __construct(ShibbolethUserProviderInterface $userProvider)
     {
         $this->userProvider = $userProvider;
     }
-    
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Core\Authentication\Provider.AuthenticationProviderInterface::supports()
@@ -44,17 +42,17 @@ class ShibbolethProvider implements AuthenticationProviderInterface
     public function authenticate(TokenInterface $token)
     {
         $user = $this->userProvider->loadUserByClaims($token->getClaims());
-        
+
         // should never reach this
-        if(!$user instanceof UserInterface) {
+        if (!$user instanceof UserInterface) {
             throw new AuthenticationException('Shibboleth authentication Failed');
         }
-        
+
         $authenticatedToken = new ShibbolethToken($user->getRoles());
         $authenticatedToken->setClaims($token->getClaims());
         $authenticatedToken->setUser($user);
         $authenticatedToken->setAuthenticated(true);
-        
+
         return $authenticatedToken;
     }
 
