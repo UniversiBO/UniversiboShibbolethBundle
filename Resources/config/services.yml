@@ -7,3 +7,6 @@ services:
   universibo_shibboleth.security.authentication.listener:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Firewall\ShibbolethListener'
     arguments: ['@security.context','@security.authentication.manager','%universibo_shibboleth.claims%']
+  universibo_shibboleth.logout_handler:
+    class: 'Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler'
+    arguments: []

@@ -1,6 +1,12 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Http\Logout;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+
+use Symfony\Component\HttpFoundation\Response;
+
+use Symfony\Component\HttpFoundation\Request;
+
 use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 
 /**
