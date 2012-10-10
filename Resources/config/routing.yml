@@ -1,4 +1,6 @@
-universibo_shibboleth_logout:
+universibo_shibboleth_login:
   pattern: /login
   defaults: { _controller: 'UniversiboShibbolethBundle:Security:login' }
-  
+universibo_shibboleth_logout:
+  pattern: /logout
+  defaults: { _controller: 'UniversiboShibbolethBundle:Security:logout' }
