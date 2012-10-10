@@ -81,6 +81,7 @@ class ShibbolethListener implements ListenerInterface
         } catch (AuthenticationException $failed) {
             $response = new Response();
             $response->setStatusCode(403);
+            $response->setContent('You are not allowed');
             $event->setResponse($response);
         }
     }
