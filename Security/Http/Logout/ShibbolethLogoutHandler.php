@@ -46,7 +46,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
             $request->getSession()->invalidate();
             
             $greenCheck = '/bundles/universiboshibboleth/images/greencheck.gif';
-            $location = $request->getBasePath().$greenCheck;
+            $location = $request->getUriForPath($greenCheck);
         } else {
             $location = $this->logoutUri;
         }
