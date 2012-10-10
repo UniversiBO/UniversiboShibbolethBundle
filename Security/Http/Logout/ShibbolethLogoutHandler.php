@@ -17,6 +17,19 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 class ShibbolethLogoutHandler implements LogoutHandlerInterface
 {
     /**
+     * @var string
+     */
+    private $logoutUri;
+    
+    /**
+     * @param string $logoutUri
+     */
+    public function __construct($logoutUri)
+    {
+        $this->logoutUri = $logoutUri;
+    }
+    
+    /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Http\Logout.LogoutHandlerInterface::logout()
      */
@@ -33,8 +46,12 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
 
         if ($request->query->get('shibboleth')) {
             $greenCheck = '/bundles/universiboshibboleth/images/greencheck.gif';
-            $response->headers->set('Location', $request->getBasePath().$greenCheck);
-            $response->setStatusCode(302);
+            $location = $request->getBasePath().$greenCheck;
+        } else {
+            $location = $this->logoutUri;
         }
+        
+        $response->headers->set('Location', $location);
+        $response->setStatusCode(302);
     }
 }
