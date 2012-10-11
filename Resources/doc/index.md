@@ -20,4 +20,22 @@ Run composer from command line to install it
 ``` bash
 $ php composer.phar update universibo/shibboleth-bundle
 ```
+
+### Step 2: Enable the bundle
+
+Enable the bundle in the kernel:
+
+``` php
+<?php
+// app/AppKernel.php
+
+public function registerBundles()
+{
+    $bundles = array(
+        // ...
+        new Universibo\Bundle\UniversiboShibbolethBundle(),
+    );
+}
+```
+
 (to be continued)
