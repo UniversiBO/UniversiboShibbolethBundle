@@ -42,7 +42,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
             }
         }
 
-        if($request->query->get('shibboleth')) {
+        if ($request->query->get('shibboleth')) {
             $location = '/bundles/universiboshibboleth/images/greencheck.gif';
         } else {
             $location = '/';

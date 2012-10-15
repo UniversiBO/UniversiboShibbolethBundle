@@ -10,9 +10,9 @@ class SecurityController extends Controller
 {
     public function loginAction()
     {
-        return $this->redirect('/');
+        $wreply = $this->getRequest()->query->get('wreply', '/');
 
-        // TODO method stub
+        return $this->redirect($wreply);
     }
 
     public function logoutAction()
