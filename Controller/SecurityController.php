@@ -19,18 +19,18 @@ class SecurityController extends Controller
     public function logoutAction()
     {
     }
-    
+
     /**
      * @return RedirectResponse
      */
     public function prelogoutAction()
     {
-        if('prod' === $this->get('kernel')->getEnvironment()){
+        if ('prod' === $this->get('kernel')->getEnvironment()) {
             $redirectUri = $this->container->getParameter('universibo_shibboleth.idp_url.logout');
         } else {
             $redirectUri = $this->generateUrl('universibo_shibboleth_logout');
         }
-        
+
         return new RedirectResponse($redirectUri);
     }
 }
