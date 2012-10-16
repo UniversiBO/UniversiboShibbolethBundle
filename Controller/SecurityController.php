@@ -33,7 +33,7 @@ class SecurityController extends Controller
             ;
             
             $request = $this->getRequest();
-            $wreply = $request->query->get('wreply', $request->server('HTTP_REFERER'));
+            $wreply = $request->query->get('wreply', $request->server->get('HTTP_REFERER'));
             
             if(is_null($wreply)) {
                 $wreply = $this->generateUrl('homepage');
