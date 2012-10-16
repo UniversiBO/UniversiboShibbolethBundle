@@ -85,7 +85,7 @@ class ShibbolethListener implements ListenerInterface
 
             $newEvent = new AuthenticationFailedEvent($event->getKernel(),
                     $event->getRequest(), $event->getRequestType());
-            $newEvent->setClaims($claims);
+            $newEvent->setClaims($claimData);
 
             $dispatchedEvent = $this
                 ->eventDispatcher
