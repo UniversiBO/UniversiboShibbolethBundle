@@ -37,5 +37,5 @@ public function registerBundles()
     );
 }
 ```
-
+### Step 3: Define a homepage rule
 (to be continued)

@@ -25,11 +25,26 @@ class SecurityController extends Controller
      */
     public function prelogoutAction()
     {
-        if ('prod' === $this->get('kernel')->getEnvironment()) {
-            $redirectUri = $this->container->getParameter('universibo_shibboleth.idp_url.logout');
+        $env = $this->get('kernel')->getEnvironment();
+        if ('prod' === $env) {
+            $redirectUri = $this
+                ->container
+                ->getParameter('universibo_shibboleth.idp_url.logout')
+            ;
+            
+            $request = $this->getRequest();
+            $wreply = $request->query->get('wreply', $request->server('HTTP_REFERER'));
+            
+            if(is_null($wreply)) {
+                $wreply = $this->generateUrl('homepage');
+            }
+            
+            $redirectUri.= '?wreply='.$wreply;
+            
         } else {
             $redirectUri = $this->generateUrl('universibo_shibboleth_logout');
         }
+        
 
         return new RedirectResponse($redirectUri);
     }
