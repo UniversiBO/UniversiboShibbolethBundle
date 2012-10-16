@@ -27,9 +27,9 @@ class SecurityController extends Controller
     public function prelogoutAction()
     {
         if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $this->redirect($this->getWreply());
+            return $this->redirect($this->getWreply());
         }
-        
+
         $env = $this->get('kernel')->getEnvironment();
         if ('prod' === $env) {
             $redirectUri = $this
