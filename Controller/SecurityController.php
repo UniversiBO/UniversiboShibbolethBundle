@@ -1,4 +1,5 @@
 <?php
+
 namespace Universibo\Bundle\ShibbolethBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -25,27 +26,35 @@ class SecurityController extends Controller
      */
     public function prelogoutAction()
     {
+        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->redirect($this->getWreply());
+        }
+        
         $env = $this->get('kernel')->getEnvironment();
         if ('prod' === $env) {
             $redirectUri = $this
-                ->container
-                ->getParameter('universibo_shibboleth.idp_url.logout')
+                    ->container
+                    ->getParameter('universibo_shibboleth.idp_url.logout')
             ;
-            
-            $request = $this->getRequest();
-            $wreply = $request->query->get('wreply', $request->server->get('HTTP_REFERER'));
-            
-            if(is_null($wreply)) {
-                $wreply = $this->generateUrl('homepage');
-            }
-            
-            $redirectUri.= '?wreply='.$wreply;
-            
+
+            $redirectUri.= '?wreply=' . $this->getWreply();
         } else {
             $redirectUri = $this->generateUrl('universibo_shibboleth_logout');
         }
-        
 
         return new RedirectResponse($redirectUri);
     }
+
+    private function getWreply()
+    {
+        $request = $this->getRequest();
+        $wreply = $request->query->get('wreply', $request->server->get('HTTP_REFERER'));
+
+        if (is_null($wreply)) {
+            $wreply = $this->generateUrl('homepage');
+        }
+
+        return $wreply;
+    }
+
 }
