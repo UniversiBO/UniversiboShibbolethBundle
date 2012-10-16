@@ -86,13 +86,13 @@ class ShibbolethListener implements ListenerInterface
             $newEvent = new AuthenticationFailedEvent($event->getKernel(),
                     $event->getRequest(), $event->getRequestType());
 
-            $this
+            $dispatchedEvent = $this
                 ->eventDispatcher
                 ->dispatch('universibo_shibboleth.auth_failed', $newEvent)
             ;
 
-            if ($newEvent->hasResponse()) {
-                $response = $newEvent->getResponse();
+            if ($dispatchedEvent->hasResponse()) {
+                $response = $dispatchedEvent->getResponse();
             } else {
                 $response = new Response();
                 $response->setStatusCode(403);
