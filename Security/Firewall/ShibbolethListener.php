@@ -2,20 +2,12 @@
 namespace Universibo\Bundle\ShibbolethBundle\Security\Firewall;
 
 use Symfony\Component\HttpFoundation\Response;
-
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-
-use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethToken;
-
-use Symfony\Component\Security\Core\SecurityContext;
-
-use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-
-use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethToken;
 
 /**
  * Shibboleth Listener
