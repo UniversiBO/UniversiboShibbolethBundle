@@ -1,6 +1,8 @@
 <?php
 namespace Universibo\Bundle\ShibbolethBundle\Security\Firewall;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
@@ -27,20 +29,29 @@ class ShibbolethListener implements ListenerInterface
     private $authenticationManager;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
      * @var array
      */
     private $claims;
 
     /**
+     *
      * @param SecurityContextInterface       $securityContext
      * @param AuthenticationManagerInterface $authenticationManager
+     * @param EventDispatcherInterface       $eventDispatcher
      * @param array                          $claims
      */
     public function __construct(SecurityContextInterface $securityContext,
-            AuthenticationManagerInterface $authenticationManager, array $claims)
+            AuthenticationManagerInterface $authenticationManager,
+            EventDispatcherInterface $eventDispatcher, array $claims)
     {
         $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
+        $this->eventDispatcher = $eventDispatcher;
         $this->claims = $claims;
     }
 
@@ -76,11 +87,11 @@ class ShibbolethListener implements ListenerInterface
             $event->setResponse($response);
         }
     }
-    
+
     private function getClaim(Request $request, $claimName)
     {
         $claim = $request->server->get($claimName);
-        
+
         return $claim === null ? $request->get('REDIRECT_'.$claimName) : $claim;
     }
 }
