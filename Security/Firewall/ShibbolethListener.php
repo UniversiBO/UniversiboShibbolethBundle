@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterfac
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Firewall\ListenerInterface;
+use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Event\AuthenticationFailedEvent;
 use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethToken;
 
 /**
@@ -81,9 +82,23 @@ class ShibbolethListener implements ListenerInterface
 
             $this->securityContext->setToken($authToken);
         } catch (AuthenticationException $failed) {
-            $response = new Response();
-            $response->setStatusCode(403);
-            $response->setContent('You are not allowed');
+
+            $newEvent = new AuthenticationFailedEvent($event->getKernel(),
+                    $event->getRequest(), $event->getRequestType());
+
+            $this
+                ->eventDispatcher
+                ->dispatch('universibo_shibboleth.auth_failed', $newEvent)
+            ;
+
+            if ($newEvent->hasResponse()) {
+                $response = $newEvent->getResponse();
+            } else {
+                $response = new Response();
+                $response->setStatusCode(403);
+                $response->setContent('403 forbidden, please send us an email');
+            }
+
             $event->setResponse($response);
         }
     }
