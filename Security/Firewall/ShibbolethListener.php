@@ -107,6 +107,6 @@ class ShibbolethListener implements ListenerInterface
     {
         $claim = $request->server->get($claimName);
 
-        return $claim === null ? $request->get('REDIRECT_'.$claimName) : $claim;
+        return $claim === null ? $request->server->get('REDIRECT_'.$claimName) : $claim;
     }
 }
