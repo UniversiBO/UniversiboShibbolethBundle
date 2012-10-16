@@ -53,14 +53,13 @@ class ShibbolethListener implements ListenerInterface
         $request = $event->getRequest();
 
         // checking if this page is secured by Shibboleth
-        if (is_null($sessionId = $request->server->get('Shib-Session-ID',
-                $request->server->get('REDIRECT_Shib-Session-ID')))) {
+        if (is_null($sessionId = $this->getClaim($request, 'Shib-Session-ID'))) {
             return;
         }
 
         $claimData = array();
         foreach ($this->claims as $claim) {
-            $claimData[$claim] = $request->server->get($claim, $request->server->get('REDIRECT_'.$claim));
+            $claimData[$claim] = $this->getClaim($request, $claim);
         }
 
         $token = new ShibbolethToken();
@@ -76,5 +75,12 @@ class ShibbolethListener implements ListenerInterface
             $response->setContent('You are not allowed');
             $event->setResponse($response);
         }
+    }
+    
+    private function getClaim(Request $request, $claimName)
+    {
+        $claim = $request->server->get($claimName);
+        
+        return $claim === null ? $request->get('REDIRECT_'.$claimName) : $claim;
     }
 }
