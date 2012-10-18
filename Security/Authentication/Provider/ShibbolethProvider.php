@@ -45,7 +45,7 @@ class ShibbolethProvider implements AuthenticationProviderInterface
 
         // should never reach this
         if (!$user instanceof UserInterface) {
-            throw new AuthenticationException('Shibboleth authentication Failed');
+            throw new AuthenticationException('Provider returned no user');
         }
 
         $authenticatedToken = new ShibbolethToken($user->getRoles());
