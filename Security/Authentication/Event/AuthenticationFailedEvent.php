@@ -15,7 +15,7 @@ class AuthenticationFailedEvent extends GetResponseEvent
      * @var array
      */
     private $claims;
-    
+
     /**
      * @var AuthenticationException
      */
@@ -32,20 +32,20 @@ class AuthenticationFailedEvent extends GetResponseEvent
     {
         return $this->claims;
     }
-    
+
     /**
      * Sets the exception
-     * 
-     * @param AuthenticationException $exception
+     *
+     * @param  AuthenticationException   $exception
      * @return AuthenticationFailedEvent
      */
     public function setException(AuthenticationException $exception)
     {
         $this->exception = $exception;
-        
+
         return $this;
     }
-    
+
     /**
      * @return AuthenticationException
      */
