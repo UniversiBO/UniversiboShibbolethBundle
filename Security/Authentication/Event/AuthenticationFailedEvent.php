@@ -46,6 +46,9 @@ class AuthenticationFailedEvent extends GetResponseEvent
         return $this;
     }
     
+    /**
+     * @return AuthenticationException
+     */
     public function getException()
     {
         return $this->exception;
