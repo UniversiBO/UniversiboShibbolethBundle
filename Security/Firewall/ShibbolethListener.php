@@ -76,11 +76,12 @@ class ShibbolethListener implements ListenerInterface
 
         $token = new ShibbolethToken();
         $token->setClaims($claimData);
-
+        
         try {
             $authToken = $this->authenticationManager->authenticate($token);
 
             $this->securityContext->setToken($authToken);
+            $request->getSession()->set('shibbolethClaims', $claimData);
         } catch (AuthenticationException $failed) {
 
             $newEvent = new AuthenticationFailedEvent($event->getKernel(),
