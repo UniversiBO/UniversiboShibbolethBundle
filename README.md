@@ -4,7 +4,7 @@ This bundle's aim is to provide Shibboleth integration for your Symfony 2.1 proj
 
 Warning
 -------
-This bundle is in early development stage, and it's not ready for use
+This bundle is in early development stage, and it's not ready for use [![Build Status](https://secure.travis-ci.org/UniversiBO/UniversiboShibbolethBundle.png)](http://travis-ci.org/UniversiBO/UniversiboShibbolethBundle)
 
 Documentation
 -------------
