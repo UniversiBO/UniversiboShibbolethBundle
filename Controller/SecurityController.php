@@ -12,7 +12,8 @@ class SecurityController extends Controller
 {
     public function loginAction()
     {
-        $wreply = $this->getRequest()->query->get('wreply', '/');
+        $request = $this->getRequest();
+        $wreply = $request->getSession()->get('_security.main.target_path', '/');
 
         return $this->redirect($wreply);
     }
