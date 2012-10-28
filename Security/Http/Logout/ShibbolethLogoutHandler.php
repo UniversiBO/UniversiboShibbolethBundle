@@ -47,6 +47,8 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
         } else {
             $location = '/';
         }
+        
+        $request->getSession()->set('shibbolethClaims', array());
 
         $response->headers->set('Location', $request->getUriForPath($location));
         $response->setStatusCode(302);
