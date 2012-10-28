@@ -25,7 +25,7 @@ class SecurityController extends Controller
     {
     }
 
-    public function shiblogout(Request $request)
+    public function shiblogoutAction(Request $request)
     {
         $context = $this->get('security.context');
 
