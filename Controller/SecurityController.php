@@ -39,7 +39,7 @@ class SecurityController extends Controller
                     ->getParameter('universibo_shibboleth.idp_url.logout')
             ;
 
-            $redirectUri.= '?wreply=' . $this->getWreply();
+            $redirectUri.= '?wreply=' . urlencode($this->getWreply());
         } else {
             $redirectUri = $this->generateUrl('universibo_shibboleth_logout');
         }
