@@ -4,6 +4,8 @@ namespace Universibo\Bundle\ShibbolethBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler;
 
 /**
  * @author Davide Bellettini <davide.bellettini@gmail.com>
@@ -14,13 +16,29 @@ class SecurityController extends Controller
     {
         $request = $this->getRequest();
         $target = $request->getSession()->get('_security.main.target_path', '/');
-	$wreply = $request->query->get('wreply', $target);
+        $wreply = $request->query->get('wreply', $target);
 
         return $this->redirect($wreply);
     }
 
     public function logoutAction()
     {
+    }
+
+    public function shiblogout(Request $request)
+    {
+        $context = $this->get('security.context');
+
+        if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $logoutHandler = new ShibbolethLogoutHandler();
+            $uri = $request->getBasePath().'/bundles/universiboshibboleth/images/greencheck.gif';
+            $response = $this->redirect($uri);;
+            $logoutHandler->logout($request, $response, $context->getToken());
+            
+            return $response;
+        }
+
+        return $this->redirect($this->generateUrl('logout', array('shibboleth' => 'true')));
     }
 
     /**

@@ -76,7 +76,7 @@ class ShibbolethListener implements ListenerInterface
 
         $token = new ShibbolethToken();
         $token->setClaims($claimData);
-        
+
         $request->getSession()->set('shibbolethClaims', $claimData);
 
         try {

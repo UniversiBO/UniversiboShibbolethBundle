@@ -17,19 +17,6 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 class ShibbolethLogoutHandler implements LogoutHandlerInterface
 {
     /**
-     * @var string
-     */
-    private $logoutUri;
-
-    /**
-     * @param string $logoutUri
-     */
-    public function __construct($logoutUri)
-    {
-        $this->logoutUri = $logoutUri;
-    }
-
-    /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Http\Logout.LogoutHandlerInterface::logout()
      */
@@ -47,10 +34,10 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
         } else {
             $location = '/';
         }
-        
+
         $request->getSession()->set('shibbolethClaims', array());
 
-        $response->headers->set('Location', $request->getUriForPath($location));
+        $response->headers->set('Location', $request->getBasePath().$location);
         $response->setStatusCode(302);
     }
 }

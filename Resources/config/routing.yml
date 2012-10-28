@@ -7,3 +7,6 @@ universibo_shibboleth_logout:
 universibo_shibboleth_prelogout:
   pattern: /prelogout
   defaults: { _controller: 'UniversiboShibbolethBundle:Security:prelogout' }
+universibo_shibboleth_shiblogout:
+  pattern: /shiblogout
+  defaults: { _controller: 'UniversiboShibbolethBundle:Security:prelogout' }
