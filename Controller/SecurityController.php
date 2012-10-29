@@ -32,7 +32,6 @@ class SecurityController extends Controller
 
         if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
             $logoutHandler = new ShibbolethLogoutHandler();
-            $uri = $request->getBasePath().'/bundles/universiboshibboleth/images/greencheck.gif';
             
             $request->query->set('shibboleth', 'true');
             $response = new Response();
