@@ -1,3 +1,6 @@
+universibo_shibboleth_greencheck:
+  pattern: /greencheck
+  defaults: { _controller: 'UniversiboShibbolethBundle:Security:greenCheck' }
 universibo_shibboleth_login:
   pattern: /login
   defaults: { _controller: 'UniversiboShibbolethBundle:Security:login' }

@@ -14,4 +14,5 @@ services:
       - '%universibo_shibboleth.claims%'
   universibo_shibboleth.logout_handler:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler'
-    arguments: []
+    arguments:
+      - '@router'

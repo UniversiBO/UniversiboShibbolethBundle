@@ -17,6 +17,16 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 class ShibbolethLogoutHandler implements LogoutHandlerInterface
 {
     /**
+     * @var RouterInterface 
+     */
+    private $router;
+    
+    public function __construct(RouterInterface $router)
+    {
+        $this->router = $router;
+    }
+    
+    /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Http\Logout.LogoutHandlerInterface::logout()
      */
@@ -30,14 +40,14 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
         }
 
         if ($request->query->get('shibboleth')) {
-            $location = '/bundles/universiboshibboleth/images/greencheck.gif';
+            $route = 'universibo_shibbolet_greencheck';
         } else {
-            $location = '/';
+            $route = 'homepage';
         }
 
         $request->getSession()->set('shibbolethClaims', array());
 
-        $response->headers->set('Location', $request->getBasePath().$location);
+        $response->headers->set('Location', $this->router->generate($route, array(), true));
         $response->setStatusCode(302);
     }
 }
