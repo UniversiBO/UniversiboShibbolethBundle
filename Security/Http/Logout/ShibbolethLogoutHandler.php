@@ -38,7 +38,7 @@ class ShibbolethLogoutHandler implements LogoutHandlerInterface
         }
 
         if ($request->query->get('shibboleth')) {
-            $route = 'universibo_shibbolet_greencheck';
+            $route = 'universibo_shibboleth_greencheck';
             $response->headers->set('Location', $this->router->generate($route, array(), true));
             $response->setStatusCode(302);
         }
