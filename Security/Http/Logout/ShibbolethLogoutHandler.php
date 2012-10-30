@@ -17,15 +17,15 @@ use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 class ShibbolethLogoutHandler implements LogoutHandlerInterface
 {
     /**
-     * @var RouterInterface 
+     * @var RouterInterface
      */
     private $router;
-    
+
     public function __construct(RouterInterface $router)
     {
         $this->router = $router;
     }
-    
+
     /**
      * (non-PHPdoc)
      * @see Symfony\Component\Security\Http\Logout.LogoutHandlerInterface::logout()

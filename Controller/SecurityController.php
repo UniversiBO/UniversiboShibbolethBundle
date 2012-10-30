@@ -32,11 +32,11 @@ class SecurityController extends Controller
 
         if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
             $logoutHandler = new ShibbolethLogoutHandler();
-            
+
             $request->query->set('shibboleth', 'true');
             $response = new Response();
             $logoutHandler->logout($request, $response, $context->getToken());
-            
+
             return $response;
         }
 
@@ -66,17 +66,17 @@ class SecurityController extends Controller
 
         return new RedirectResponse($redirectUri);
     }
-    
+
     public function greenCheckAction()
     {
         $greenCheckFile = __DIR__.'/../Resources/public/images/greencheck.gif';
-        
+
         $response = new Response(file_get_contents($greenCheckFile));
         $response->setStatusCode(200);
         $response->setClientTtl(0);
         $response->headers->set('Content-type', 'image/gif');
         $response->setTtl(0);
-        
+
         return $response;
     }
 

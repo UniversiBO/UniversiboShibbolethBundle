@@ -21,29 +21,29 @@ use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethT
 class ShibbolethListener implements ListenerInterface
 {
     /**
-     * Symfony Security Context 
-     * 
+     * Symfony Security Context
+     *
      * @var SecurityContextInterface
      */
     private $securityContext;
 
     /**
      * Symfony Authentication Manager
-     * 
+     *
      * @var AuthenticationManagerInterface
      */
     private $authenticationManager;
 
     /**
      * Symfony Event Dispatcher
-     * 
+     *
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
-    
+
     /**
      * Symfony logger
-     * 
+     *
      * @var LoggerInterface
      */
     private $logger;
