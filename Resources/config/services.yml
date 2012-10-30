@@ -10,6 +10,7 @@ services:
       - '@security.context'
       - '@security.authentication.manager'
       - '@event_dispatcher'
+      - '@logger'
       - '%universibo_shibboleth.claims%'
   universibo_shibboleth.logout_handler:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler'

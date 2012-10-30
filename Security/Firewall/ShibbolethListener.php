@@ -5,6 +5,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -20,40 +21,48 @@ use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethT
 class ShibbolethListener implements ListenerInterface
 {
     /**
+     * Symfony Security Context 
+     * 
      * @var SecurityContextInterface
      */
     private $securityContext;
 
     /**
+     * Symfony Authentication Manager
+     * 
      * @var AuthenticationManagerInterface
      */
     private $authenticationManager;
 
     /**
+     * Symfony Event Dispatcher
+     * 
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    
+    /**
+     * Symfony logger
+     * 
+     * @var LoggerInterface
+     */
+    private $logger;
 
     /**
      * @var array
      */
     private $claims;
 
-    /**
-     *
-     * @param SecurityContextInterface       $securityContext
-     * @param AuthenticationManagerInterface $authenticationManager
-     * @param EventDispatcherInterface       $eventDispatcher
-     * @param array                          $claims
-     */
     public function __construct(SecurityContextInterface $securityContext,
             AuthenticationManagerInterface $authenticationManager,
-            EventDispatcherInterface $eventDispatcher, array $claims)
+            EventDispatcherInterface $eventDispatcher, LoggerInterface $logger,
+            array $claims)
     {
         $this->securityContext = $securityContext;
         $this->authenticationManager = $authenticationManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->claims = $claims;
+        $this->logger = $logger;
     }
 
     /**
@@ -83,6 +92,10 @@ class ShibbolethListener implements ListenerInterface
             $authToken = $this->authenticationManager->authenticate($token);
             $this->securityContext->setToken($authToken);
         } catch (AuthenticationException $failed) {
+            $message = 'AuthenticationException, ';
+            $message .= json_encode($claimData);
+            $message .= ' message: ' . $failed->getMessage();
+            $this->logger->err($message);
 
             $newEvent = new AuthenticationFailedEvent($event->getKernel(),
                     $event->getRequest(), $event->getRequestType());
