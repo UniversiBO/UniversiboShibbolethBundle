@@ -31,7 +31,7 @@ class SecurityController extends Controller
         $context = $this->get('security.context');
 
         if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $logoutHandler = new ShibbolethLogoutHandler();
+            $logoutHandler = new ShibbolethLogoutHandler($this->get('router'));
 
             $request->query->set('shibboleth', 'true');
             $response = new Response();
