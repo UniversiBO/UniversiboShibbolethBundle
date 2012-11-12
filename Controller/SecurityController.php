@@ -15,6 +15,11 @@ class SecurityController extends Controller
 {
     public function loginAction()
     {
+        $context = $this->get('security.context');
+        if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->forward('FOSUserBundle:Security:login');
+        }
+        
         $request = $this->getRequest();
         $target = $request->getSession()->get('_security.main.target_path', '/');
         $wreply = $request->query->get('wreply', $target);
