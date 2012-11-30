@@ -96,6 +96,7 @@ idp_url:
   logout: 'prelogout.aspx'
 route:
   after_logout: 'homepage'
+  after_login: 'homepage'
 claims:
   - eppn
   - givenName
