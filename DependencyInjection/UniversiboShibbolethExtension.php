@@ -36,10 +36,10 @@ class UniversiboShibbolethExtension extends Extension
             throw new \InvalidArgumentException('universibo_shibboleth.route.after_logout must be set!');
         }
 
+        $container->setParameter('universibo_shibboleth.route.after_login', $config['route']['after_login']);
         $container->setParameter('universibo_shibboleth.route.after_logout', $config['route']['after_logout']);
         $container->setParameter('universibo_shibboleth.claims', $config['claims']);
         $container->setParameter('universibo_shibboleth.user_provider', $config['user_provider']);
-
     }
 
     /**
