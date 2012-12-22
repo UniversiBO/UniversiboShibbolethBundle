@@ -29,6 +29,7 @@ class SecurityController extends Controller
         
         $defaultTarget = $this->generateUrl($defaultRoute, array(), true);
         
+        // TODO hardcoded firewall name
         $target = $request->getSession()->get('_security.main.target_path', $defaultTarget);
         $wreply = $request->query->get('wreply', $target);
 
