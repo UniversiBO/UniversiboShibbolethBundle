@@ -19,16 +19,16 @@ class SecurityController extends Controller
         if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->forward('FOSUserBundle:Security:login');
         }
-        
+
         $request = $this->getRequest();
-        
+
         $defaultRoute = $this
             ->container
             ->getParameter('universibo_shibboleth.route.after_login')
         ;
-        
+
         $defaultTarget = $this->generateUrl($defaultRoute, array(), true);
-        
+
         // TODO hardcoded firewall name
         $target = $request->getSession()->get('_security.main.target_path', $defaultTarget);
         $wreply = $request->query->get('wreply', $target);
