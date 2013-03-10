@@ -60,6 +60,7 @@ class SecurityController
      *
      * @param KernelInterface          $kernel
      * @param SecurityContextInterface $securityContext
+     * @param RouterInterface          $router
      * @param string                   $firewallName
      * @param string                   $afterLoginRoute
      * @param string                   $idpLogoutUrl
