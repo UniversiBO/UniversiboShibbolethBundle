@@ -2,10 +2,10 @@ UniversiboShibbolethBundle
 ==========================
 This bundle's aim is to provide Shibboleth integration for your Symfony 2.1 or 2.2 project.
 
-Warning
--------
-This bundle is under development. Although it's stable enough we cannot ensure API stability yet.
-[![Build Status](https://secure.travis-ci.org/UniversiBO/UniversiboShibbolethBundle.png)](http://travis-ci.org/UniversiBO/UniversiboShibbolethBundle)
+Development status
+------------------
+This bundle is under active development. Although it's stable enough we cannot ensure API stability yet.
+Travis build: [![Build Status](https://secure.travis-ci.org/UniversiBO/UniversiboShibbolethBundle.png)](http://travis-ci.org/UniversiBO/UniversiboShibbolethBundle)
 
 Documentation
 -------------
