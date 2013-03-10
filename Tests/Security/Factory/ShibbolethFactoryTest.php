@@ -26,4 +26,20 @@ class ShibbolethFactoryTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals('pre_auth', $this->factory->getPosition());
     }
+
+    public function testCreate()
+    {
+        $container = $this->getMock('Symfony\\Component\\DependencyInjection\\ContainerBuilder');
+
+        $container
+           ->expects($this->exactly(2))
+           ->method('setDefinition')
+        ;
+
+        $result = $this->factory->create($container, 'id', null, null, 'entrypoint');
+
+        $this->assertContains('entrypoint', $result);
+        $this->assertContains('security.authentication.provider.shibboleth.id', $result);
+        $this->assertContains('security.authentication.listener.shibboleth.id', $result);
+    }
 }

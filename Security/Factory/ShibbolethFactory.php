@@ -23,7 +23,7 @@ class ShibbolethFactory implements SecurityFactoryInterface
         ;
 
         $listenerId = 'security.authentication.listener.shibboleth.'.$id;
-        $listener = $container->setDefinition($listenerId, new DefinitionDecorator('universibo_shibboleth.security.authentication.listener'));
+        $container->setDefinition($listenerId, new DefinitionDecorator('universibo_shibboleth.security.authentication.listener'));
 
         return array($providerId, $listenerId, $defaultEntryPoint);
     }
