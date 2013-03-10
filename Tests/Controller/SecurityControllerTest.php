@@ -5,6 +5,8 @@ namespace Universibo\Bundle\ShibbolethBundle\Tests\Security\Authentication\Token
 use LogicException;
 use PHPUnit_Framework_TestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -133,5 +135,56 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
         $response = $controller->prelogoutAction($request);
 
         $this->assertEquals('http://www.google.com/?wreply='.urlencode('/'), $response->headers->get('Location'));
+    }
+
+    public function testPrelogoutAuthenticateDev()
+    {
+        $controller = $this->createController('dev');
+        $request = new Request();
+
+        $url = '/logout';
+
+        $this
+            ->router
+            ->expects($this->once())
+            ->method('generate')
+            ->with($this->equalTo('universibo_shibboleth_logout'))
+            ->will($this->returnValue($url))
+        ;
+
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('IS_AUTHENTICATED_FULLY'))
+            ->will($this->returnValue(true))
+        ;
+
+        $response = $controller->prelogoutAction($request);
+
+        $this->assertEquals($url, $response->headers->get('Location'));
+    }
+
+    public function testLoginAnonymous()
+    {
+        $request = new Request();
+
+        $expectedRequest = clone $request;
+        $expectedRequest->attributes->set('_controller', 'FOSUserBundle:Security:login');
+
+        $this
+            ->kernel
+            ->expects($this->once())
+            ->method('handle')
+            ->with($this->equalTo($expectedRequest), $this->equalTo(HttpKernelInterface::SUB_REQUEST))
+            ->will($this->returnValue(new Response($content = 'Hello World')))
+        ;
+
+        $response = $this
+            ->createController()
+            ->loginAction($request)
+        ;
+
+        $this->assertEquals($content, $response->getContent());
     }
 }
