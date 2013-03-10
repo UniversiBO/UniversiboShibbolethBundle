@@ -2,6 +2,7 @@
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider;
 
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -39,6 +40,10 @@ class ShibbolethProvider implements AuthenticationProviderInterface
      */
     public function authenticate(TokenInterface $token)
     {
+        if (!$this->supports($token)) {
+            throw new InvalidArgumentException('Token not supported');
+        }
+
         $user = $this->userProvider->loadUserByClaims($token->getClaims());
 
         // should never reach this
