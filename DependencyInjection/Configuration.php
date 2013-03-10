@@ -58,6 +58,10 @@ class Configuration implements ConfigurationInterface
                     ->isRequired()
                     ->cannotBeEmpty()
                 ->end()
+                ->scalarNode('firewall_name')
+                    ->cannotBeEmpty()
+                    ->defaultValue('main')
+                ->end()
             ->end();
 
         return $treeBuilder;

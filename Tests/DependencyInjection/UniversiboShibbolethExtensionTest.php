@@ -91,10 +91,18 @@ class UniversiboShibbolethExtensionTest extends PHPUnit_Framework_TestCase
         $loader->load(array($config), new ContainerBuilder());
     }
 
-    public function testCorrectConfig()
+    public function testCorrectConfigWithFirewallName()
     {
         $loader = new UniversiboShibbolethExtension();
         $config = $this->getConfig();
+        $loader->load(array($config), new ContainerBuilder());
+    }
+
+    public function testCorrectConfigWithoutFirewallName()
+    {
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        unset($config['firewall_name']);
         $loader->load(array($config), new ContainerBuilder());
     }
 
@@ -105,6 +113,7 @@ idp_url:
   base: 'https://idp.example.com/adfs/ls/'
   info: 'infoSSO.aspx'
   logout: 'prelogout.aspx'
+firewall_name: 'main'
 route:
   after_logout: 'homepage'
   after_login: 'homepage'
