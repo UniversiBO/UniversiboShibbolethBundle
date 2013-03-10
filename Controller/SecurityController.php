@@ -2,9 +2,11 @@
 
 namespace Universibo\Bundle\ShibbolethBundle\Controller;
 
+use LogicException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -21,6 +23,13 @@ class SecurityController
      * @var string
      */
     private $environment;
+
+    /**
+     * Kernel
+     *
+     * @var KernelInterface
+     */
+    private $kernel;
 
     /**
      * Security context
@@ -69,6 +78,7 @@ class SecurityController
             RouterInterface $router, $firewallName, $afterLoginRoute, $idpLogoutUrl)
     {
         $this->environment     = $kernel->getEnvironment();
+        $this->kernel          = $kernel;
         $this->securityContext = $securityContext;
         $this->router          = $router;
         $this->firewallName    = $firewallName;
@@ -79,7 +89,10 @@ class SecurityController
     public function loginAction(Request $request)
     {
         if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->forward('FOSUserBundle:Security:login');
+            $path['_controller'] = 'FOSUserBundle:Security:login';
+            $subRequest = $request->duplicate(array(), null, $path);
+
+            return $this->kernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
         }
 
         $defaultTarget = $this->generateUrl($this->afterLoginRoute, array(), true);
@@ -92,6 +105,7 @@ class SecurityController
 
     public function logoutAction()
     {
+        throw new LogicException('Request should be intercepted');
     }
 
     public function shiblogoutAction(Request $request)
@@ -127,9 +141,14 @@ class SecurityController
             $redirectUri = $this->generateUrl('universibo_shibboleth_logout');
         }
 
-        return new RedirectResponse($redirectUri);
+        return $this->redirect($redirectUri);
     }
 
+    /**
+     * Displays Green Check gif
+     *
+     * @return Response
+     */
     public function greenCheckAction()
     {
         $greenCheckFile = __DIR__.'/../Resources/public/images/greencheck.gif';
@@ -165,5 +184,16 @@ class SecurityController
     private function generateUrl($name, $parameters = array(), $referenceType = RouterInterface::ABSOLUTE_PATH)
     {
         return $this->router->generate($name, $parameters, $referenceType);
+    }
+
+    /**
+     * Creates a RedirectResponse
+     *
+     * @param  string           $url
+     * @return RedirectResponse
+     */
+    private function redirect($url)
+    {
+        return new RedirectResponse($url);
     }
 }
