@@ -1,8 +1,11 @@
 {
     "name": "universibo/shibboleth-bundle",
     "type": "symfony-bundle",
-    "description": "UniversiBO ShibbolethBundle",
-    "keywords": ["shibboleth"],
+    "description": "Shibboleth Integration for FOSUserBundle",
+    "keywords": [
+        "authentication",
+        "shibboleth"
+    ],
     "homepage": "http://github.com/UniversiBO",
     "license": "MIT",
     "authors": [
@@ -16,6 +19,7 @@
         }
     ],
     "require": {
+        "friendsofsymfony/user-bundle": "*",
         "symfony/framework-bundle": ">=2.1.0,<2.3-dev",
         "symfony/security-bundle": ">=2.1.0,<2.3-dev",
         "zendframework/zend-uri": ">=2.0.0,<2.1.0"
@@ -25,8 +29,9 @@
     },
     "minimum-stability": "dev",
     "autoload": {
-        "psr-0": { "Universibo\\Bundle\\ShibbolethBundle": "" }
+        "psr-0": {
+            "Universibo\\Bundle\\ShibbolethBundle": ""
+        }
     },
     "target-dir": "Universibo/Bundle/ShibbolethBundle"
 }
-
