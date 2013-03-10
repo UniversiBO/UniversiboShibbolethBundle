@@ -72,17 +72,6 @@ class UniversiboShibbolethExtensionTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
-    public function testMissingAfterLogoutRouteThrowsException()
-    {
-        $loader = new UniversiboShibbolethExtension();
-        $config = $this->getConfig();
-        unset($config['route']['after_logout']);
-        $loader->load(array($config), new ContainerBuilder());
-    }
-
-    /**
-     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     */
     public function testMissingUserProviderThrowsException()
     {
         $loader = new UniversiboShibbolethExtension();
@@ -115,7 +104,6 @@ idp_url:
   logout: 'prelogout.aspx'
 firewall_name: 'main'
 route:
-  after_logout: 'homepage'
   after_login: 'homepage'
 claims:
   - eppn
