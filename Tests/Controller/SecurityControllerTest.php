@@ -2,7 +2,9 @@
 
 namespace Universibo\Bundle\ShibbolethBundle\Tests\Security\Authentication\Token;
 
+use LogicException;
 use PHPUnit_Framework_TestCase;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -72,5 +74,64 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
     public function testLogoutThrowsLogicException()
     {
         $this->createController()->logoutAction();
+    }
+
+    public function testPrelogoutAnonymousWreply()
+    {
+        $controller = $this->createController();
+        $request = new Request();
+        $request->query->set('wreply', $url = 'http://www.google.it/');
+
+        $response = $controller->prelogoutAction($request);
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals($url, $response->headers->get('Location'));
+    }
+
+    public function testPrelogoutAnonymousNoWreply()
+    {
+        $controller = $this->createController();
+        $request = new Request();
+
+        $url = '/';
+
+        $this
+            ->router
+            ->expects($this->once())
+            ->method('generate')
+            ->with($this->equalTo('homepage'))
+            ->will($this->returnValue($url))
+        ;
+
+        $response = $controller->prelogoutAction($request);
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals($url, $response->headers->get('Location'));
+    }
+
+    public function testPrelogoutAuthenticated()
+    {
+        $controller = $this->createController();
+        $request = new Request();
+
+        $url = '/';
+
+        $this
+            ->router
+            ->expects($this->once())
+            ->method('generate')
+            ->with($this->equalTo('homepage'))
+            ->will($this->returnValue($url))
+        ;
+
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('IS_AUTHENTICATED_FULLY'))
+            ->will($this->returnValue(true))
+        ;
+
+        $response = $controller->prelogoutAction($request);
+
+        $this->assertEquals('http://www.google.com/?wreply='.urlencode('/'), $response->headers->get('Location'));
     }
 }
