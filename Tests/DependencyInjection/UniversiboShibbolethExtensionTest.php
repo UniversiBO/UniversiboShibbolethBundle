@@ -6,16 +6,16 @@ namespace Universibo\Bundle\ShibbolethBundle\Tests\DependencyInjection;
  * Some methods are from FOSUserBundle (Copyright (c) 2010-2011 FriendsOfSymfony)
  * @author Davide Bellettini <davide.bellettini>
  */
-use Symfony\Component\Yaml\Parser;
 
+use PHPUnit_Framework_TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
+use Symfony\Component\Yaml\Parser;
 use Universibo\Bundle\ShibbolethBundle\DependencyInjection\UniversiboShibbolethExtension;
 
-class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
+class UniversiboShibbolethExtensionTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingBaseUrlThrowsException()
     {
@@ -26,7 +26,7 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingInfoUrlThrowsException()
     {
@@ -37,7 +37,18 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     */
+    public function testMalformedInfoUrlThrowsException()
+    {
+        $loader = new UniversiboShibbolethExtension();
+        $config = $this->getConfig();
+        $config['idp_url']['base'] = 'This is not an URL';
+        $loader->load(array($config), new ContainerBuilder());
+    }
+
+    /**
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingLogoutUrlThrowsException()
     {
@@ -48,7 +59,7 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingClaimsThrowsException()
     {
@@ -59,7 +70,7 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingAfterLogoutRouteThrowsException()
     {
@@ -70,7 +81,7 @@ class UniversiboShibbolethExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
+     * @expectedException Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
      */
     public function testMissingUserProviderThrowsException()
     {

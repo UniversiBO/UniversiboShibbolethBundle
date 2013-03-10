@@ -1,5 +1,6 @@
-*~
 *.swp
+*~
+/nbproject/
 /vendor
 composer.lock
 php-cs-fixer.phar

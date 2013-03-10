@@ -1,13 +1,14 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\DependencyInjection;
-use Zend\Uri\Uri;
-use Zend\Uri\Exception\InvalidArgumentException;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use InvalidArgumentException;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Zend\Validator\Uri;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -16,6 +17,22 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class UniversiboShibbolethExtension extends Extension
 {
+    /**
+     * Uri validator
+     *
+     * @var Uri
+     */
+    private $validator;
+
+    /**
+     * Class constructor
+     */
+    public function __construct()
+    {
+        $this->validator = new Uri();
+        $this->validator->setAllowRelative(false);
+        $this->validator->setAllowAbsolute(true);
+    }
     /**
      * {@inheritDoc}
      */
@@ -32,10 +49,6 @@ class UniversiboShibbolethExtension extends Extension
         $container->setParameter('universibo_shibboleth.idp_url.info', $this->validateUrl($config, 'info', $baseUrl));
         $container->setParameter('universibo_shibboleth.idp_url.logout', $this->validateUrl($config, 'logout', $baseUrl));
 
-        if (!isset($config['route']['after_logout'])) {
-            throw new \InvalidArgumentException('universibo_shibboleth.route.after_logout must be set!');
-        }
-
         $container->setParameter('universibo_shibboleth.route.after_login', $config['route']['after_login']);
         $container->setParameter('universibo_shibboleth.route.after_logout', $config['route']['after_logout']);
         $container->setParameter('universibo_shibboleth.claims', $config['claims']);
@@ -43,26 +56,19 @@ class UniversiboShibbolethExtension extends Extension
     }
 
     /**
-     * @param  array                     $config
-     * @param  string                    $name
-     * @param  string                    $base
-     * @throws \InvalidArgumentException
+     * @param  array                    $config
+     * @param  string                   $name
+     * @param  string                   $base
+     * @throws InvalidArgumentException
      * @return string
      */
     private function validateUrl(array $config, $name, $base='')
     {
-        if (!isset($config['idp_url'][$name])) {
-            throw new \InvalidArgumentException(
-                    'universibo_shibboleth.idp_url.'.$name.' is not set!');
+        $url = $base.$config['idp_url'][$name];
+        if (empty($url) || !$this->validator->isValid($url)) {
+            throw new InvalidConfigurationException('universibo_shibboleth.idp_url.'.$name.' is not valid!');
         }
 
-        try {
-            $uri = new Uri($base.$config['idp_url'][$name]);
-
-            return $uri->toString();
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                    'universibo_shibboleth.idp_url.'.$name.' is not valid!');
-        }
+        return $url;
     }
 }

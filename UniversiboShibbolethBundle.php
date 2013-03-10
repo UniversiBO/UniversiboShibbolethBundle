@@ -2,11 +2,9 @@
 
 namespace Universibo\Bundle\ShibbolethBundle;
 
-use Universibo\Bundle\ShibbolethBundle\Security\Factory\ShibbolethFactory;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Universibo\Bundle\ShibbolethBundle\Security\Factory\ShibbolethFactory;
 
 /**
  * @author Davide Bellettini <davide.bellettini@gmail.com>
