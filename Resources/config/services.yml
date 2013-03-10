@@ -1,4 +1,6 @@
 services:
+  universibo_shibboleth.cookie.cleaner:
+    class: 'Universibo\Bundle\ShibbolethBundle\Http\Cookie\CookieCleaner'
   universibo_shibboleth.controller.security:
     class: 'Universibo\Bundle\ShibbolethBundle\Controller\SecurityController'
     arguments:
@@ -23,3 +25,4 @@ services:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler'
     arguments:
       - '@router'
+      - '@universibo_shibboleth.cookie.cleaner'
