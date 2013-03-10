@@ -1,6 +1,6 @@
 UniversiboShibbolethBundle
 ==========================
-This bundle integrates Shibboleth Apache Module with Symfony 2.1
+This bundle integrates Shibboleth Apache Module with Symfony 2.1 or 2.2
 
 ## Installation
 
@@ -38,4 +38,8 @@ public function registerBundles()
 }
 ```
 ### Step 3: Define a homepage rule
+``` yaml
+homepage:
+    pattern: /
+```
 (to be continued)
