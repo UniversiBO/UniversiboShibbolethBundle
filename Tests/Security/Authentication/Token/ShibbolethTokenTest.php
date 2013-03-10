@@ -24,4 +24,9 @@ class ShibbolethTokenTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($claims, $this->token->getClaims());
     }
+
+    public function testCredentialsIsEmpty()
+    {
+        $this->assertSame('', $this->token->getCredentials());
+    }
 }

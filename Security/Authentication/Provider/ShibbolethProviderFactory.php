@@ -1,10 +1,9 @@
 <?php
-
+/**
+ * @license MIT
+ */
 namespace Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider;
 
-/**
- * @author Davide Bellettini <davide.bellettini@gmail.com>
- */
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -13,9 +12,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ShibbolethProviderFactory
 {
     /**
-     * @param  ContainerInterface                                                                      $container
-     * @param  string                                                                                  $name
-     * @return \Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider\ShibbolethProvider
+     * @param  ContainerInterface $container
+     * @param  string             $name
+     * @return ShibbolethProvider
      */
     public static function get(ContainerInterface $container, $name)
     {
