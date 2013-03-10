@@ -93,9 +93,8 @@ class ShibbolethListener implements ListenerInterface
             $this->securityContext->setToken($authToken);
         } catch (AuthenticationException $failed) {
             $message = 'AuthenticationException, ';
-            $message .= json_encode($claimData);
             $message .= ' message: ' . $failed->getMessage();
-            $this->logger->err($message);
+            $this->logger->err($message, $claimData);
 
             $newEvent = new AuthenticationFailedEvent($event->getKernel(),
                     $event->getRequest(), $event->getRequestType());
