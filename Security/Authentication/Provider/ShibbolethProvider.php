@@ -1,15 +1,13 @@
 <?php
 
 namespace Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-
+use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Universibo\Bundle\ShibbolethBundle\Security\Authentication\Token\ShibbolethToken;
 use Universibo\Bundle\ShibbolethBundle\Security\User\ShibbolethUserProviderInterface;
-use Symfony\Component\Security\Core\Authentication\Provider\AuthenticationProviderInterface;
 
 /**
  * @author Davide Bellettini <davide.bellettini@gmail.com>
