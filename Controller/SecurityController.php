@@ -2,34 +2,87 @@
 
 namespace Universibo\Bundle\ShibbolethBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler;
 
 /**
  * @author Davide Bellettini <davide.bellettini@gmail.com>
  */
-class SecurityController extends Controller
+class SecurityController
 {
-    public function loginAction()
+    /**
+     * Environment
+     *
+     * @var string
+     */
+    private $environment;
+
+    /**
+     * Security context
+     *
+     * @var SecurityContextInterface
+     */
+    private $securityContext;
+
+    /**
+     * Router
+     *
+     * @var RouterInterface
+     */
+    private $router;
+
+    /**
+     * Firewall name
+     *
+     * @var string
+     */
+    private $firewallName;
+
+    /**
+     * Redirect after login route
+     * @var string
+     */
+    private $afterLoginRoute;
+
+    /**
+     * Logout url
+     * @var string
+     */
+    private $idpLogoutUrl;
+
+    /**
+     * Class constructor
+     *
+     * @param KernelInterface          $kernel
+     * @param SecurityContextInterface $securityContext
+     * @param string                   $firewallName
+     * @param string                   $afterLoginRoute
+     * @param string                   $idpLogoutUrl
+     */
+    public function __construct(KernelInterface $kernel, SecurityContextInterface $securityContext,
+            RouterInterface $router, $firewallName, $afterLoginRoute, $idpLogoutUrl)
     {
-        $context = $this->get('security.context');
-        if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
+        $this->environment     = $kernel->getEnvironment();
+        $this->securityContext = $securityContext;
+        $this->router          = $router;
+        $this->firewallName    = $firewallName;
+        $this->afterLoginRoute = $afterLoginRoute;
+        $this->idpLogoutUrl    = $idpLogoutUrl;
+    }
+
+    public function loginAction(Request $request)
+    {
+        if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->forward('FOSUserBundle:Security:login');
         }
 
-        $request = $this->getRequest();
-
-        $defaultRoute = $this
-            ->container
-            ->getParameter('universibo_shibboleth.route.after_login')
-        ;
-
-        $defaultTarget = $this->generateUrl($defaultRoute, array(), true);
-
-        $firewallName = $this->get('universibo_shibboleth.firewall_name');
+        $defaultTarget = $this->generateUrl($this->afterLoginRoute, array(), true);
+        $firewallName = $this->firewallName;
         $target = $request->getSession()->get('_security.'.$firewallName.'.target_path', $defaultTarget);
         $wreply = $request->query->get('wreply', $target);
 
@@ -42,10 +95,10 @@ class SecurityController extends Controller
 
     public function shiblogoutAction(Request $request)
     {
-        $context = $this->get('security.context');
+        $context = $this->securityContext;
 
         if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $logoutHandler = new ShibbolethLogoutHandler($this->get('router'));
+            $logoutHandler = new ShibbolethLogoutHandler($this->router);
 
             $request->query->set('shibboleth', 'true');
             $response = new Response();
@@ -60,20 +113,15 @@ class SecurityController extends Controller
     /**
      * @return RedirectResponse
      */
-    public function prelogoutAction()
+    public function prelogoutAction(Request $request)
     {
-        if (!$this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirect($this->getWreply());
+        if (!$this->securityContext->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirect($this->getWreply($request));
         }
 
-        $env = $this->get('kernel')->getEnvironment();
-        if ('prod' === $env) {
-            $redirectUri = $this
-                    ->container
-                    ->getParameter('universibo_shibboleth.idp_url.logout')
-            ;
-
-            $redirectUri.= '?wreply=' . urlencode($this->getWreply());
+        if ('prod' === $this->environment) {
+            $redirectUri = $this->idpLogoutUrl;
+            $redirectUri.= '?wreply=' . urlencode($this->getWreply($request));
         } else {
             $redirectUri = $this->generateUrl('universibo_shibboleth_logout');
         }
@@ -94,9 +142,8 @@ class SecurityController extends Controller
         return $response;
     }
 
-    private function getWreply()
+    private function getWreply(Request $request)
     {
-        $request = $this->getRequest();
         $wreply = $request->query->get('wreply', $request->server->get('HTTP_REFERER'));
 
         if (is_null($wreply)) {
@@ -106,4 +153,16 @@ class SecurityController extends Controller
         return $wreply;
     }
 
+    /**
+     * Generates an url
+     *
+     * @param  string  $name
+     * @param  array   $parameters
+     * @param  boolean $referenceType
+     * @return string
+     */
+    private function generateUrl($name, $parameters = array(), $referenceType = RouterInterface::ABSOLUTE_PATH)
+    {
+        return $this->router->generate($name, $parameters, $referenceType);
+    }
 }

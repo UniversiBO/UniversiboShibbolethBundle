@@ -1,4 +1,13 @@
 services:
+  universibo_shibboleth.controller.security:
+    class: 'Universibo\Bundle\ShibbolethBundle\Controller\SecurityController'
+    arguments:
+      - '@kernel'
+      - '@security.context'
+      - '@router'
+      - '%universibo_shibboleth.firewall_name%'
+      - '%universibo_shibboleth.route.after_login%'
+      - '%universibo_shibboleth.idp_url.logout%'
   universibo_shibboleth.security.authentication.provider:
     class: 'Universibo\Bundle\ShibbolethBundle\Security\Authentication\Provider\ShibbolethProvider'
     arguments: ['@universibo_shibboleth.user_provider']

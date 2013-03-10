@@ -1,15 +1,15 @@
 universibo_shibboleth_greencheck:
   pattern: /greencheck
-  defaults: { _controller: 'UniversiboShibbolethBundle:Security:greenCheck' }
+  defaults: { _controller: 'universibo_shibboleth.router.security:greenCheck' }
 universibo_shibboleth_login:
   pattern: /login
-  defaults: { _controller: 'UniversiboShibbolethBundle:Security:login' }
+  defaults: { _controller: 'universibo_shibboleth.router.security:login' }
 universibo_shibboleth_logout:
   pattern: /logout
-  defaults: { _controller: 'UniversiboShibbolethBundle:Security:logout' }
+  defaults: { _controller: 'universibo_shibboleth.router.security:logout' }
 universibo_shibboleth_prelogout:
   pattern: /prelogout
-  defaults: { _controller: 'UniversiboShibbolethBundle:Security:prelogout' }
+  defaults: { _controller: 'universibo_shibboleth.router.security:prelogout' }
 universibo_shibboleth_shiblogout:
   pattern: /shiblogout
-  defaults: { _controller: 'UniversiboShibbolethBundle:Security:shiblogout' }
+  defaults: { _controller: 'universibo_shibboleth.router.security:shiblogout' }
