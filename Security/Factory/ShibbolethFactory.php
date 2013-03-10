@@ -46,6 +46,10 @@ class ShibbolethFactory implements SecurityFactoryInterface
         return 'shibboleth';
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @param NodeDefinition $builder
+     */
     public function addConfiguration(NodeDefinition $builder)
     {
     }
