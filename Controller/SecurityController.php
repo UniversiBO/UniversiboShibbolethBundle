@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Universibo\Bundle\ShibbolethBundle\Security\Http\Logout\ShibbolethLogoutHandler;
+use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
 
 /**
  * @author Davide Bellettini <davide.bellettini@gmail.com>
@@ -46,6 +46,13 @@ class SecurityController
     private $router;
 
     /**
+     * Logout handler
+     *
+     * @var LogoutHandlerInterface
+     */
+    private $logoutHandler;
+
+    /**
      * Firewall name
      *
      * @var string
@@ -70,17 +77,19 @@ class SecurityController
      * @param KernelInterface          $kernel
      * @param SecurityContextInterface $securityContext
      * @param RouterInterface          $router
+     * @param LogoutHandlerInterface   $logoutHandler
      * @param string                   $firewallName
      * @param string                   $afterLoginRoute
      * @param string                   $idpLogoutUrl
      */
     public function __construct(KernelInterface $kernel, SecurityContextInterface $securityContext,
-            RouterInterface $router, $firewallName, $afterLoginRoute, $idpLogoutUrl)
+            RouterInterface $router, LogoutHandlerInterface $logoutHandler, $firewallName, $afterLoginRoute, $idpLogoutUrl)
     {
         $this->environment     = $kernel->getEnvironment();
         $this->kernel          = $kernel;
         $this->securityContext = $securityContext;
         $this->router          = $router;
+        $this->logoutHandler   = $logoutHandler;
         $this->firewallName    = $firewallName;
         $this->afterLoginRoute = $afterLoginRoute;
         $this->idpLogoutUrl    = $idpLogoutUrl;
@@ -113,11 +122,9 @@ class SecurityController
         $context = $this->securityContext;
 
         if (!$context->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $logoutHandler = new ShibbolethLogoutHandler($this->router);
-
             $request->query->set('shibboleth', 'true');
             $response = new Response();
-            $logoutHandler->logout($request, $response, $context->getToken());
+            $this->logoutHandler->logout($request, $response, $context->getToken());
 
             return $response;
         }

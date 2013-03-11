@@ -7,6 +7,7 @@ services:
       - '@kernel'
       - '@security.context'
       - '@router'
+      - '@universibo_shibboleth.logout_handler'
       - '%universibo_shibboleth.firewall_name%'
       - '%universibo_shibboleth.route.after_login%'
       - '%universibo_shibboleth.idp_url.logout%'

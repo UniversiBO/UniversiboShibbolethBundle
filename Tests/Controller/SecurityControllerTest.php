@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\AnonymousToken;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Universibo\Bundle\ShibbolethBundle\Controller\SecurityController;
 
@@ -34,6 +35,8 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
      */
     private $router;
 
+    private $logoutHandler;
+
     /**
      * @var SecurityController
      */
@@ -44,6 +47,7 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
         $this->kernel          = $this->getMock('Symfony\\Component\\HttpKernel\\KernelInterface');
         $this->securityContext = $this->getMock('Symfony\\Component\\Security\\Core\\SecurityContextInterface');
         $this->router          = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
+        $this->logoutHandler   = $this->getMock('Symfony\\Component\\Security\\Http\\Logout\\LogoutHandlerInterface');
     }
 
     private function createController($environment = 'prod')
@@ -56,7 +60,7 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
         ;
 
         $this->controller = new SecurityController($this->kernel, $this->securityContext,
-                $this->router, 'main', 'homepage', 'http://www.google.com/');
+                $this->router, $this->logoutHandler, 'main', 'homepage', 'http://www.google.com/');
 
         return $this->controller;
     }
@@ -186,5 +190,97 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
         ;
 
         $this->assertEquals($content, $response->getContent());
+    }
+
+    public function testLoginAuthenticated()
+    {
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('IS_AUTHENTICATED_FULLY'))
+            ->will($this->returnValue(true))
+        ;
+
+        $request = new Request();
+        $session = $this->getMock('Symfony\\Component\\HttpFoundation\\Session\\SessionInterface');
+        $request->setSession($session);
+
+        $this
+            ->router
+            ->expects($this->once())
+            ->method('generate')
+            ->with($this->equalTo('homepage'))
+            ->will($this->returnValue('/'))
+        ;
+
+        $this
+            ->createController()
+            ->loginAction($request)
+        ;
+
+        $this->markTestIncomplete();
+    }
+
+    public function testShibLogoutAuthenticated()
+    {
+        $request = new Request();
+
+        $this
+            ->router
+            ->expects($this->once())
+            ->method('generate')
+            ->with($this->equalTo('logout'), $this->equalTo(array('shibboleth' => 'true')))
+            ->will($this->returnValue($url='/logout?shibboleth=true'))
+        ;
+
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('IS_AUTHENTICATED_FULLY'))
+            ->will($this->returnValue(true))
+        ;
+
+        $response = $this
+            ->createController()
+            ->shiblogoutAction($request)
+        ;
+
+        $this->assertEquals(302, $response->getStatusCode(), 'Status code should be 302');
+        $this->assertEquals($url, $response->headers->get('Location'), 'Location should match');
+    }
+
+    public function testShibLogoutAnonymous()
+    {
+        $request = new Request();
+
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('IS_AUTHENTICATED_FULLY'))
+            ->will($this->returnValue(false))
+        ;
+
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('getToken')
+            ->will($this->returnValue(new AnonymousToken('key', 'anonymous')))
+        ;
+
+        $this
+            ->logoutHandler
+            ->expects($this->once())
+            ->method('logout')
+        ;
+
+        $response = $this
+            ->createController()
+            ->shiblogoutAction($request)
+        ;
+
+        $this->assertEquals(200, $response->getStatusCode(), 'Status code should be 302');
     }
 }
