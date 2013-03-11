@@ -105,6 +105,38 @@ class ShibbolethListenerTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(403, $response->getStatusCode(), 'Status code 403');
     }
 
+    public function testAuthFailedResponse()
+    {
+        $request = $this->buildRequest();
+        $request->server->set('Shib-Session-ID', 1234);
+
+        $this
+            ->authenticationManager
+            ->expects($this->once())
+            ->method('authenticate')
+            ->will($this->throwException(new AuthenticationException('message', 3, null)));
+        ;
+
+        $event = new GetResponseEvent($this->kernel, $request, HttpKernelInterface::MASTER_REQUEST);
+        $event2 = clone $event;
+
+        $response = new Response('Hello!');
+        $event2->setResponse($response);
+
+        $this
+            ->eventDispatcher
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->equalTo('universibo_shibboleth.auth_failed'))
+            ->will($this->returnValue($event2))
+        ;
+
+        $this->listener->handle($event);
+
+        $this->assertTrue($event->hasResponse(), 'Event should have a response');
+        $this->assertSame($response, $event->getResponse());
+    }
+
     /**
      * @return Request
      */
