@@ -214,12 +214,59 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue('/'))
         ;
 
-        $this
+        $session
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('_security.main.target_path'), $this->equalTo('/'))
+            ->will($this->returnArgument(1));
+        ;
+
+        $response = $this
             ->createController()
             ->loginAction($request)
         ;
 
-        $this->markTestIncomplete();
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('/', $response->headers->get('Location'));
+    }
+
+    public function testLoginAuthenticatedWreply()
+    {
+        $this
+            ->securityContext
+            ->expects($this->once())
+            ->method('isGranted')
+            ->with($this->equalTo('IS_AUTHENTICATED_FULLY'))
+            ->will($this->returnValue(true))
+        ;
+
+        $request = new Request();
+        $request->query->set('wreply', '/test');
+        $session = $this->getMock('Symfony\\Component\\HttpFoundation\\Session\\SessionInterface');
+        $request->setSession($session);
+
+        $this
+            ->router
+            ->expects($this->once())
+            ->method('generate')
+            ->with($this->equalTo('homepage'))
+            ->will($this->returnValue('/'))
+        ;
+
+        $session
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('_security.main.target_path'), $this->equalTo('/'))
+            ->will($this->returnArgument(1));
+        ;
+
+        $response = $this
+            ->createController()
+            ->loginAction($request)
+        ;
+
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertEquals('/test', $response->headers->get('Location'));
     }
 
     public function testShibLogoutAuthenticated()
