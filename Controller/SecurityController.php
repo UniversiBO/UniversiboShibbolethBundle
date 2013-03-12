@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Http\Logout\LogoutHandlerInterface;
@@ -27,7 +26,7 @@ class SecurityController
     /**
      * Kernel
      *
-     * @var KernelInterface
+     * @var HttpKernelInterface
      */
     private $kernel;
 
@@ -74,7 +73,7 @@ class SecurityController
     /**
      * Class constructor
      *
-     * @param KernelInterface          $kernel
+     * @param HttpKernelInterface      $kernel
      * @param SecurityContextInterface $securityContext
      * @param RouterInterface          $router
      * @param LogoutHandlerInterface   $logoutHandler
@@ -82,7 +81,7 @@ class SecurityController
      * @param string                   $afterLoginRoute
      * @param string                   $idpLogoutUrl
      */
-    public function __construct(KernelInterface $kernel, SecurityContextInterface $securityContext,
+    public function __construct(HttpKernelInterface $kernel, SecurityContextInterface $securityContext,
             RouterInterface $router, LogoutHandlerInterface $logoutHandler, $firewallName, $afterLoginRoute, $idpLogoutUrl)
     {
         $this->environment     = $kernel->getEnvironment();

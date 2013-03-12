@@ -4,7 +4,7 @@ services:
   universibo_shibboleth.controller.security:
     class: 'Universibo\Bundle\ShibbolethBundle\Controller\SecurityController'
     arguments:
-      - '@kernel'
+      - '@http_kernel'
       - '@security.context'
       - '@router'
       - '@universibo_shibboleth.logout_handler'
