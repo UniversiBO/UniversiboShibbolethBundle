@@ -28,7 +28,7 @@ class SecurityController
      *
      * @var HttpKernelInterface
      */
-    private $kernel;
+    private $httpKernel;
 
     /**
      * Security context
@@ -73,7 +73,8 @@ class SecurityController
     /**
      * Class constructor
      *
-     * @param HttpKernelInterface      $kernel
+     * @param KernelInterface          $kernel
+     * @param HttpKernelInterface      $httpKernel
      * @param SecurityContextInterface $securityContext
      * @param RouterInterface          $router
      * @param LogoutHandlerInterface   $logoutHandler
@@ -81,11 +82,12 @@ class SecurityController
      * @param string                   $afterLoginRoute
      * @param string                   $idpLogoutUrl
      */
-    public function __construct(HttpKernelInterface $kernel, SecurityContextInterface $securityContext,
-            RouterInterface $router, LogoutHandlerInterface $logoutHandler, $firewallName, $afterLoginRoute, $idpLogoutUrl)
+    public function __construct(KernelInterface $kernel, HttpKernelInterface $httpKernel,
+            SecurityContextInterface $securityContext, RouterInterface $router,
+            LogoutHandlerInterface $logoutHandler, $firewallName, $afterLoginRoute, $idpLogoutUrl)
     {
         $this->environment     = $kernel->getEnvironment();
-        $this->kernel          = $kernel;
+        $this->httpKernel      = $httpKernel;
         $this->securityContext = $securityContext;
         $this->router          = $router;
         $this->logoutHandler   = $logoutHandler;
@@ -100,7 +102,7 @@ class SecurityController
             $path['_controller'] = 'FOSUserBundle:Security:login';
             $subRequest = $request->duplicate(array(), null, $path);
 
-            return $this->kernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
+            return $this->httpKernel->handle($subRequest, HttpKernelInterface::SUB_REQUEST);
         }
 
         $defaultTarget = $this->generateUrl($this->afterLoginRoute, array(), true);
