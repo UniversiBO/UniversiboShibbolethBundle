@@ -21,6 +21,8 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
      */
     private $kernel;
 
+    private $httpKernel;
+
     /**
      * Security Context
      *
@@ -45,6 +47,7 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->kernel          = $this->getMock('Symfony\\Component\\HttpKernel\\KernelInterface');
+        $this->httpKernel      = $this->getMock('Symfony\\Component\\HttpKernel\\HttpKernelInterface');
         $this->securityContext = $this->getMock('Symfony\\Component\\Security\\Core\\SecurityContextInterface');
         $this->router          = $this->getMock('Symfony\\Component\\Routing\\RouterInterface');
         $this->logoutHandler   = $this->getMock('Symfony\\Component\\Security\\Http\\Logout\\LogoutHandlerInterface');
@@ -59,7 +62,7 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
             ->will($this->returnValue($environment))
         ;
 
-        $this->controller = new SecurityController($this->kernel, $this->securityContext,
+        $this->controller = new SecurityController($this->kernel, $this->httpKernel, $this->securityContext,
                 $this->router, $this->logoutHandler, 'main', 'homepage', 'http://www.google.com/');
 
         return $this->controller;
@@ -177,7 +180,7 @@ class SecurityControllerTest extends PHPUnit_Framework_TestCase
         $expectedRequest->attributes->set('_controller', 'FOSUserBundle:Security:login');
 
         $this
-            ->kernel
+            ->httpKernel
             ->expects($this->once())
             ->method('handle')
             ->with($this->equalTo($expectedRequest), $this->equalTo(HttpKernelInterface::SUB_REQUEST))
