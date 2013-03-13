@@ -58,5 +58,6 @@ universibo_shibboleth:
     - eppn
     - givenName
   user_provider: user.provider.service.id
+  firewall_name: main # Optional, default value: main
 ```
 (to be continued)
