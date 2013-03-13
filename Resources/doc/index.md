@@ -42,4 +42,21 @@ public function registerBundles()
 homepage:
     pattern: /
 ```
+### Step 4: Implement user provider interface
+Define a service implementing Universibo\Bundle\ShibbolethBundle\Security\User\ShibbolethUserProviderInterface
+
+### Step 5: Configure your bundle (app/config/config.yml)
+``` yaml
+universibo_shibboleth:
+  idp_url: # Identity Provider Web Page
+    base: '%idp_url%'
+    info: 'infoSSO.aspx'
+    logout: 'prelogout.aspx'
+  route:
+    after_login:  'route_name'
+  claims:
+    - eppn
+    - givenName
+  user_provider: user.provider.service.id
+```
 (to be continued)
