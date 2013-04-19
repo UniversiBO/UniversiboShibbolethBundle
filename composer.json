@@ -22,7 +22,7 @@
         "friendsofsymfony/user-bundle": "*",
         "symfony/framework-bundle": ">=2.1.0,<2.3-dev",
         "symfony/security-bundle": ">=2.1.0,<2.3-dev",
-        "zendframework/zend-uri": ">=2.0.0,<2.1.0"
+        "zendframework/zend-uri": ">=2.0.0,<2.2-dev"
     },
     "require-dev": {
         "symfony/yaml": "2.2.*",
