@@ -33,7 +33,7 @@ public function registerBundles()
 {
     $bundles = array(
         // ...
-        new Universibo\Bundle\UniversiboShibbolethBundle(),
+        new Universibo\Bundle\ShibbolethBundle\UniversiboShibbolethBundle(),
     );
 }
 ```
