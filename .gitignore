@@ -1,5 +1,6 @@
 *.swp
 *~
+/bin
 /nbproject/
 /vendor
 php-cs-fixer.phar
